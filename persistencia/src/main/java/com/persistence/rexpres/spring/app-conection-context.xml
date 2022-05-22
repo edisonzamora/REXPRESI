@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<context:property-placeholder location="classpath*:com/persistence/rexpres/properties/*.properties"/>
+	<context:annotation-config/>
+    <tx:annotation-driven/>
+    
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean abstract="true" id="genericoDao"  class="com.persistence.common.jpa.dao.imp.JpaTeplateDaoImp">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitManager" ref="persistenceUnitManager"/>
+		<property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+	</bean>
+
+	<bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+		<property name="persistenceXmlLocation" value="classpath:/com/persistence/rexpres/persistence.xml"/>
+		<!-- if no datasource is specified, use this one -->
+		<property name="defaultDataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<description>
+			Fem servir Hibernate com a motor de persistencia per sota de JPA.
+		</description>
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="false" />
+		<!-- <property name="database" value="${persistence.database:HSQL}" /> -->
+		<property name="databasePlatform" value="${persistence.dialect}" />
+	</bean>
+		
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+	</bean>
+	<bean id="estadoDao"  class="com.persistence.rexpres.jpa.dao.imp.EstadoDaoImp" parent="genericoDao"/>
+</beans>
