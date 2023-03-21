@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rpx="http://java.sun.com/jsf/composite/componentes"
+	xmlns:t="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>#{app.TITULO_APP}</title>
+	<style type="text/css">
+.table_menu_list {
+	margin: 0 auto;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+	border-style: none;
+}
+
+body .ui-panelgrid .ui-panelgrid-cell {
+	border: none;
+}
+
+div.ui-datatable-scrollable-header-box {
+	margin-right: 0px !important;
+}
+</style>
+</h:head>
+
+<body>
+		<f:view locale="#{configapp.idiomaDefecto}">
+
+	<p:menubar>
+		<p:submenu label="File" icon="pi pi-file">
+			<p:submenu label="New" icon="pi pi-briefcase">
+				<p:menuitem value="Project" url="#" />
+				<p:menuitem value="Other" url="#" />
+			</p:submenu>
+			<p:menuitem value="Open" url="#" />
+			<p:separator />
+			<p:menuitem value="Quit" url="#" />
+		</p:submenu>
+		<p:submenu label="Edit" icon="pi pi-pencil">
+			<p:menuitem value="Undo" url="#" icon="pi pi-angle-double-left" />
+			<p:menuitem value="Redo" url="#" icon="pi pi-angle-double-right" />
+		</p:submenu>
+		<p:submenu label="#{msg.home_barra_ayuda}" icon="pi pi-question">
+			<p:submenu label="#{msg.home_barra_config}">
+				<p:submenu label="#{msg.home_barra_idiomas}">
+					<p:menuitem value="Spanish" url="#" />
+					<p:menuitem value="English" url="#" />
+				</p:submenu>
+			</p:submenu>
+		</p:submenu>
+		<f:facet name="options">
+		<!-- <p:commandButton type="button" value="Logout" icon="pi pi-home" />
+ -->		<h:form onsubmit="this.action='#{request.contextPath}/appLogout';"
+						class="logout-form">
+						<p:commandButton value="#{msg.home_logout_btn}" ajax="false" />
+					</h:form>
+		</f:facet>
+	</p:menubar>
+	<p:panelGrid id="home_panel" columns="1" style="text-align: center;">
+			<!-- 		<rpx:barraComponet labelTitulo="#{app.home_title}" /> -->
+
+			<p:row>
+				<p:panelGrid columns="4">
+					<p:column>
+						<p:outputLabel value="#{msg.home_filter}:" />
+					</p:column>
+					<p:column id="columm_select_buscador">
+						<h:form id="formSelector">
+							<p:selectOneMenu id="buscar_por"
+								value="#{homecontroller.homeBean.selectCamp}"
+								style="width:125px">
+								<f:selectItem itemLabel="#{msg.home_by}" itemValue="" />
+								<f:selectItem itemLabel="#{msg.home_id}" itemValue="id" />
+								<f:selectItem itemLabel="#{msg.home_name}" itemValue="nombre" />
+								<f:selectItem itemLabel="#{msg.home_lastname}"
+									itemValue="apellido" />
+								<f:selectItem itemLabel="#{msg.home_mail}" itemValue="correo" />
+								<!-- <f:selectItem itemLabel="#{msg.home_condition}"
+									itemValue="estado" /> -->
+								<p:ajax event="change" execute="buscar_por" />
+							</p:selectOneMenu>
+						</h:form>
+					</p:column>
+					<p:column colspan="1" id="columm_buscador">
+						<h:form id="formBuscador">
+							<p:inputText id="bucador"
+								value="#{homecontroller.homeBean.buscador}">
+								<p:ajax event="keyup" update="formUsuariosTable:tableUsuarios"
+									listener="#{homecontroller.buscar}" />
+							</p:inputText>
+						</h:form>
+					</p:column>
+					<p:column colspan="1">
+						<h:outputText id="out_usuario"
+							value="#{homecontroller.homeBean.userBeanHome.nombre}" />
+					</p:column>
+					<!-- <form action="/rexpres/appLogout" method="post">
+						<input type="submit" value="Logout"
+							class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"/>
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+					</form> -->
+					
+				</p:panelGrid>
+			</p:row>
+			<p:row>
+				<p:panelGrid columns="2">
+					<p:column rendered="false">
+						<h:form id="formSelectAd">
+							<p:panelGrid columns="1">
+								<p:panelMenu style="width:300px; heigth:100%">
+									<p:submenu label="Ajax Menuitems">
+										<p:menuitem value="Save" action="#{homecontroller.getlibros}"
+											icon="pi pi-save" />
+										<p:menuitem value="Update"
+											action="#{homecontroller.getlibros}" icon="pi pi-refresh" />
+									</p:submenu>
+								</p:panelMenu>
+							</p:panelGrid>
+						</h:form>
+					</p:column>
+					<p:column colspan="1" style="height:300px;">
+						<h:form id="formUsuariosTable">
+							<p:dataTable id="tableUsuarios" var="usuarioBean"
+								value="#{homecontroller.homeBean.listaUsuariosBean}"
+								scrollable="true" scrollHeight="100%">
+								<f:facet name="header">#{msg.home_title_table_users}</f:facet>
+								<p:column style="width:32px;text-align: center">
+									<p:commandButton icon="pi pi-search" title="editar"
+										action="#{homecontroller.editarUsuario}">
+										<f:setPropertyActionListener value="#{usuarioBean}"
+											target="#{homecontroller.homeBean.userBeanHome}" />
+									</p:commandButton>
+								</p:column>
+								<p:column headerText="#{msg.home_name}">
+									<h:outputText value="#{usuarioBean.nombre}" />
+								</p:column>
+								<p:column headerText="#{msg.home_lastname}">
+									<h:outputText value="#{usuarioBean.apellido}" />
+								</p:column>
+								<p:column headerText="#{msg.home_mail}">
+									<h:outputText value="#{usuarioBean.correo}" />
+								</p:column>
+								<p:column headerText="#{msg.home_role}">
+									<h:outputText value="#{usuarioBean.role}" />
+								</p:column>
+								<p:column>
+									<p:selectBooleanButton value="#{usuarioBean.activo eq 1}"
+										disabled="true" onLabel="Yes" offLabel="No">
+										<f:ajax update="tableUsuarios"
+											listener="#{homecontroller.getlibros}" />
+									</p:selectBooleanButton>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</p:column>
+				</p:panelGrid>
+			</p:row>
+		
+		<!-- <p:link outcome="librosView" value="libros"
+		style="margin-right:20px;
+				text-align: left;" />
+	<f:param name="valor" value="eweee"></f:param> -->
+
+	</p:panelGrid>
+</f:view>
+</body>
+</html>

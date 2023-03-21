@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns:secu="http://www.springframework.org/schema/security"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+   
+   
+   <bean id="usuarioDetailsService" class="com.rexssecurity.services.UsuarioDetailsService" />
+	
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
+	<secu:http auto-config="true" create-session="never" use-expressions="false" >
+		<secu:csrf disabled="true" />
+		<secu:http-basic />
+		<secu:headers>
+			<secu:frame-options policy="SAMEORIGIN" />
+			<secu:hsts disabled="true"/>
+		</secu:headers>
+		<!-- <secu:intercept-url pattern="/*" access="ROLE_ADMIN" /> -->
+        <secu:intercept-url pattern="/views/*" access="ROLE_ADMIN" />
+		<secu:intercept-url pattern="/rexpres/javax.faces.resource/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <secu:form-login login-page="/loginView.xhtml" 
+                         login-processing-url="/appLogin"
+                         username-parameter="rex:username"
+		   				 password-parameter="rex:password"
+		   				 default-target-url="/views/homeView.xhtml"/>
+		<secu:logout 
+		  			     logout-url="/appLogout" 
+		                 logout-success-url="/loginView.xhtml"/>  
+		<secu:access-denied-handler error-page="/error"/>
+	</secu:http>
+	<secu:authentication-manager>
+		 <secu:authentication-provider
+			user-service-ref="usuarioDetailsService">
+			<secu:password-encoder ref="passwordEncoder" />
+		</secu:authentication-provider> 
+	</secu:authentication-manager>
+
+	
+	
+	
+	</beans>

@@ -1,0 +1,20 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.rexpress.entities">
+	<!-- Poner las queries aqui en adelante -->
+	<class name="ConfigOptions" table="CONFIG_OPTIONS">
+		<id column="ID" name="id" type="integer">
+		</id>
+		<property column="NOMBRE" name="nombre" type="string" />
+		<property column="VALOR" name="valor" type="string" />
+		<property column="ACTIVO" name="activo" type="integer" />
+	</class>
+
+
+	<query name="listaOpciones">
+      <![CDATA[ SELECT c FROM ConfigOptions c]]>
+	</query>
+
+</hibernate-mapping>

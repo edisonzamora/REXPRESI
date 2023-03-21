@@ -1,0 +1,7 @@
+.classpath
+target/*
+.project
+.metadata/
+Main/
+Servers/
+RemoteSystemsTempFiles/

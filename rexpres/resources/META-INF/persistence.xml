@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
+                        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+	<persistence-unit name="testPU">
+		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<!-- <jta-data-source>java:jboos/jdbc/rexpress_d</jta-data-source> -->
+		<!--<non-jta-data-source>java:comp/env/jdbc/rexpress_d</non-jta-data-source> -->
+		
+		<!-- <mapping-file>META-INF/hibernate/Role.hbm.xml</mapping-file> -->
+		
+		<class>com.rexssecurity.entitys.Usuario</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes> 
+		<properties>
+			 <!-- <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>  -->
+			 <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			 <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?serverTimezone=UTC"/> 
+			 <property name="javax.persistence.jdbc.user" value="admin" /> 
+			 <property name="javax.persistence.jdbc.password" value="admin" />
+			 <!-- <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/rexpress_d" />  -->
+			 <!-- <property name="hibernate.default_catalog" value="com.rexssecurity"/>
+             <property name="hibernate.default_schema" value="entitys"/> -->
+             <property name="hibernate.default_entity_mode" value="dynamic-map"/>
+             <property name="hibernate.archive.autodetection" value="class,hbm"/>
+             <property name="hibernate.mapping.precedence" value="class,hbm"/>
+			 <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			 <property name="hibernate.hbm2ddl.auto" value="update"></property>
+			 <property name="hibernate.show_sql" value="true" />
+		</properties>
+		<!-- org.hibernate.dialect.MySQL5InnoDBDialect org.hibernate.dialect.MySQLDialect -->
+		
+	</persistence-unit>
+	
+<!-- 	<persistence-unit name="rexpressPU">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<jta-data-source>java:jboos/jdbc/rexpress_d</jta-data-source>
+		<non-jta-data-source>java:comp/env/jdbc/rexpress_d</non-jta-data-source>
+		
+		<mapping-file>META-INF/hibernate/Config_Options_Querys.hbm.xml</mapping-file>
+         <class>com.rexpress.entities.ConfigOptions</class>
+		 <exclude-unlisted-classes>true</exclude-unlisted-classes> 
+		<properties>
+			 <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/> 
+			 <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+			 <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/rexpress?serverTimezone=UTC"/> 
+			 <property name="javax.persistence.jdbc.user" value="usurexpress" /> 
+			 <property name="javax.persistence.jdbc.password" value="usurexpress" />
+			 <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/rexpress_d" /> 
+			 <property name="hibernate.default_entity_mode" value="dynamic-map"/>
+			 <property name="hibernate.mapping.precedence" value="class,hbm"/>			 
+			 <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			 <property name="hibernate.hbm2ddl.auto" value="validate"></property>
+			 <property name="hibernate.show_sql" value="true" />
+		</properties>
+		org.hibernate.dialect.MySQL5InnoDBDialect org.hibernate.dialect.MySQLDialect
+		
+	</persistence-unit>
+ -->	
+	
+</persistence>

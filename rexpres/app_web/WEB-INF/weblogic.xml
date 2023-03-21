@@ -1,0 +1,6 @@
+<!DOCTYPE weblogic-web-app PUBLIC
+	" -  // BEA Systems，Inc.//DDD Web Application 8.1 // EN"
+	"http://www.bea.com/servers/wls810/dtd/weblogic810-web-jar.dtd">
+	<weblogic-web-app>
+	<context-root>rexpres</context-root>
+	</weblogic-web-app>
